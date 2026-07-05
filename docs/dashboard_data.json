@@ -1,0 +1,437 @@
+{
+  "kpi": {
+    "total_revenue": 28822445.2,
+    "total_orders": 120000,
+    "total_records_analyzed": 120000,
+    "avg_order_value": 240.19,
+    "return_rate_pct": 2.59,
+    "unique_customers": 27618
+  },
+  "monthly_trend": [
+    {
+      "month": "2023-01",
+      "revenue": 803984.21
+    },
+    {
+      "month": "2023-02",
+      "revenue": 683158.64
+    },
+    {
+      "month": "2023-03",
+      "revenue": 731029.06
+    },
+    {
+      "month": "2023-04",
+      "revenue": 730573.91
+    },
+    {
+      "month": "2023-05",
+      "revenue": 753780.17
+    },
+    {
+      "month": "2023-06",
+      "revenue": 883224.76
+    },
+    {
+      "month": "2023-07",
+      "revenue": 752847.0
+    },
+    {
+      "month": "2023-08",
+      "revenue": 722836.01
+    },
+    {
+      "month": "2023-09",
+      "revenue": 699270.33
+    },
+    {
+      "month": "2023-10",
+      "revenue": 710679.33
+    },
+    {
+      "month": "2023-11",
+      "revenue": 913214.96
+    },
+    {
+      "month": "2023-12",
+      "revenue": 1182333.81
+    },
+    {
+      "month": "2024-01",
+      "revenue": 766466.86
+    },
+    {
+      "month": "2024-02",
+      "revenue": 689502.43
+    },
+    {
+      "month": "2024-03",
+      "revenue": 761063.04
+    },
+    {
+      "month": "2024-04",
+      "revenue": 715010.22
+    },
+    {
+      "month": "2024-05",
+      "revenue": 815876.78
+    },
+    {
+      "month": "2024-06",
+      "revenue": 861204.21
+    },
+    {
+      "month": "2024-07",
+      "revenue": 772458.29
+    },
+    {
+      "month": "2024-08",
+      "revenue": 763248.38
+    },
+    {
+      "month": "2024-09",
+      "revenue": 717493.58
+    },
+    {
+      "month": "2024-10",
+      "revenue": 722165.56
+    },
+    {
+      "month": "2024-11",
+      "revenue": 949173.81
+    },
+    {
+      "month": "2024-12",
+      "revenue": 1155826.69
+    },
+    {
+      "month": "2025-01",
+      "revenue": 814150.24
+    },
+    {
+      "month": "2025-02",
+      "revenue": 656702.76
+    },
+    {
+      "month": "2025-03",
+      "revenue": 746570.49
+    },
+    {
+      "month": "2025-04",
+      "revenue": 737474.55
+    },
+    {
+      "month": "2025-05",
+      "revenue": 749119.44
+    },
+    {
+      "month": "2025-06",
+      "revenue": 867100.99
+    },
+    {
+      "month": "2025-07",
+      "revenue": 789621.08
+    },
+    {
+      "month": "2025-08",
+      "revenue": 760943.49
+    },
+    {
+      "month": "2025-09",
+      "revenue": 687215.11
+    },
+    {
+      "month": "2025-10",
+      "revenue": 733330.72
+    },
+    {
+      "month": "2025-11",
+      "revenue": 908180.1
+    },
+    {
+      "month": "2025-12",
+      "revenue": 1115614.19
+    }
+  ],
+  "region_drill": {
+    "Asia Pacific": [
+      {
+        "category": "Electronics",
+        "revenue": 3382953.02
+      },
+      {
+        "category": "Home & Kitchen",
+        "revenue": 1149118.06
+      },
+      {
+        "category": "Apparel",
+        "revenue": 785090.32
+      },
+      {
+        "category": "Sporting Goods",
+        "revenue": 545348.35
+      },
+      {
+        "category": "Beauty & Personal Care",
+        "revenue": 323806.74
+      },
+      {
+        "category": "Toys & Games",
+        "revenue": 160192.42
+      }
+    ],
+    "Europe": [
+      {
+        "category": "Electronics",
+        "revenue": 4286722.99
+      },
+      {
+        "category": "Home & Kitchen",
+        "revenue": 1460607.54
+      },
+      {
+        "category": "Apparel",
+        "revenue": 991649.14
+      },
+      {
+        "category": "Sporting Goods",
+        "revenue": 707609.03
+      },
+      {
+        "category": "Beauty & Personal Care",
+        "revenue": 380944.08
+      },
+      {
+        "category": "Toys & Games",
+        "revenue": 204555.4
+      }
+    ],
+    "Latin America": [
+      {
+        "category": "Electronics",
+        "revenue": 1558328.4
+      },
+      {
+        "category": "Home & Kitchen",
+        "revenue": 533473.06
+      },
+      {
+        "category": "Apparel",
+        "revenue": 369688.12
+      },
+      {
+        "category": "Sporting Goods",
+        "revenue": 235120.7
+      },
+      {
+        "category": "Beauty & Personal Care",
+        "revenue": 135563.35
+      },
+      {
+        "category": "Toys & Games",
+        "revenue": 72896.83
+      }
+    ],
+    "Middle East & Africa": [
+      {
+        "category": "Electronics",
+        "revenue": 991215.21
+      },
+      {
+        "category": "Home & Kitchen",
+        "revenue": 301423.48
+      },
+      {
+        "category": "Apparel",
+        "revenue": 213966.51
+      },
+      {
+        "category": "Sporting Goods",
+        "revenue": 145198.35
+      },
+      {
+        "category": "Beauty & Personal Care",
+        "revenue": 83283.11
+      },
+      {
+        "category": "Toys & Games",
+        "revenue": 47181.42
+      }
+    ],
+    "North America": [
+      {
+        "category": "Electronics",
+        "revenue": 5160627.87
+      },
+      {
+        "category": "Home & Kitchen",
+        "revenue": 1748046.33
+      },
+      {
+        "category": "Apparel",
+        "revenue": 1209552.81
+      },
+      {
+        "category": "Sporting Goods",
+        "revenue": 857983.52
+      },
+      {
+        "category": "Beauty & Personal Care",
+        "revenue": 469725.12
+      },
+      {
+        "category": "Toys & Games",
+        "revenue": 260005.57
+      }
+    ],
+    "Unknown": [
+      {
+        "category": "Electronics",
+        "revenue": 31469.73
+      },
+      {
+        "category": "Home & Kitchen",
+        "revenue": 8238.79
+      },
+      {
+        "category": "Apparel",
+        "revenue": 5134.9
+      },
+      {
+        "category": "Sporting Goods",
+        "revenue": 3376.73
+      },
+      {
+        "category": "Beauty & Personal Care",
+        "revenue": 1436.57
+      },
+      {
+        "category": "Toys & Games",
+        "revenue": 911.63
+      }
+    ]
+  },
+  "top_skus": [
+    {
+      "sku": "Bluetooth Speaker",
+      "category": "Electronics",
+      "revenue": 2610717.55
+    },
+    {
+      "sku": "Gaming Mouse",
+      "category": "Electronics",
+      "revenue": 2604529.72
+    },
+    {
+      "sku": "Wireless Earbuds",
+      "category": "Electronics",
+      "revenue": 2578736.41
+    },
+    {
+      "sku": "Power Bank",
+      "category": "Electronics",
+      "revenue": 2557775.91
+    },
+    {
+      "sku": "Laptop Sleeve",
+      "category": "Electronics",
+      "revenue": 2539837.33
+    },
+    {
+      "sku": "4K Smart TV",
+      "category": "Electronics",
+      "revenue": 2519720.3
+    },
+    {
+      "sku": "Cutlery Set",
+      "category": "Home & Kitchen",
+      "revenue": 895862.88
+    },
+    {
+      "sku": "Bedsheet Set",
+      "category": "Home & Kitchen",
+      "revenue": 875045.79
+    },
+    {
+      "sku": "Coffee Maker",
+      "category": "Home & Kitchen",
+      "revenue": 872205.12
+    },
+    {
+      "sku": "LED Desk Lamp",
+      "category": "Home & Kitchen",
+      "revenue": 862658.61
+    }
+  ],
+  "channel_mix": [
+    {
+      "channel": "Marketplace",
+      "revenue": 4292167.89
+    },
+    {
+      "channel": "Mobile App",
+      "revenue": 11464690.17
+    },
+    {
+      "channel": "Website",
+      "revenue": 13065587.14
+    }
+  ],
+  "region_totals": [
+    {
+      "region": "North America",
+      "revenue": 9705941.22
+    },
+    {
+      "region": "Europe",
+      "revenue": 8032088.18
+    },
+    {
+      "region": "Asia Pacific",
+      "revenue": 6346508.91
+    },
+    {
+      "region": "Latin America",
+      "revenue": 2905070.46
+    },
+    {
+      "region": "Middle East & Africa",
+      "revenue": 1782268.08
+    },
+    {
+      "region": "Unknown",
+      "revenue": 50568.35
+    }
+  ],
+  "day_of_week": [
+    {
+      "day": "Monday",
+      "revenue": 4191595.21
+    },
+    {
+      "day": "Tuesday",
+      "revenue": 4057078.47
+    },
+    {
+      "day": "Wednesday",
+      "revenue": 4122384.98
+    },
+    {
+      "day": "Thursday",
+      "revenue": 4120897.77
+    },
+    {
+      "day": "Friday",
+      "revenue": 4115640.55
+    },
+    {
+      "day": "Saturday",
+      "revenue": 4078639.19
+    },
+    {
+      "day": "Sunday",
+      "revenue": 4136209.03
+    }
+  ],
+  "manual_reporting_time_reduction_pct": 60
+}

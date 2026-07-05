@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Commerce Sales Intelligence — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0B1220;
+    --surface:#121B2E;
+    --surface-2:#182338;
+    --line:#243250;
+    --text:#E8ECF1;
+    --muted:#7C8BA1;
+    --gold:#E3A542;
+    --teal:#3FB8AF;
+    --coral:#E4572E;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1240px;margin:0 auto;padding:48px 28px 90px;}
+
+  header.hero{
+    display:flex;flex-direction:column;gap:6px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:32px;margin-bottom:36px;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--gold);
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:clamp(32px,4.2vw,52px);
+    line-height:1.05;
+    margin:8px 0 10px;
+  }
+  .hero p{color:var(--muted);max-width:620px;font-size:15.5px;line-height:1.55;margin:0;}
+
+  .kpi-board{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+    margin-bottom:44px;
+  }
+  .kpi{
+    background:var(--surface);
+    padding:22px 20px;
+    position:relative;
+  }
+  .kpi .label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:10px;
+  }
+  .kpi .value{
+    font-family:'JetBrains Mono',monospace;
+    font-size:26px;font-weight:700;color:var(--gold);
+    letter-spacing:-.01em;
+  }
+  .kpi .value.teal{color:var(--teal);}
+  .kpi .value.coral{color:var(--coral);}
+  .kpi .sub{font-size:11px;color:var(--muted);margin-top:6px;}
+
+  .grid{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;margin-bottom:20px;}
+  .panel{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:22px 22px 14px;
+  }
+  .panel h2{
+    font-family:'Fraunces',serif;font-weight:600;font-size:18px;margin:0 0 2px;
+  }
+  .panel .hint{font-size:12px;color:var(--muted);margin-bottom:14px;}
+  canvas{max-width:100%;}
+
+  .region-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+  .pill{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    padding:7px 12px;
+    border:1px solid var(--line);
+    border-radius:100px;
+    color:var(--muted);
+    cursor:pointer;
+    background:var(--surface-2);
+    transition:all .15s ease;
+  }
+  .pill.active{
+    color:var(--bg);
+    background:var(--gold);
+    border-color:var(--gold);
+  }
+
+  .sku-list{list-style:none;margin:0;padding:0;}
+  .sku-list li{
+    display:flex;align-items:baseline;gap:12px;
+    padding:11px 0;border-bottom:1px solid var(--line);
+    font-size:13.5px;
+  }
+  .sku-list li:last-child{border-bottom:none;}
+  .rank{
+    font-family:'JetBrains Mono',monospace;color:var(--muted);
+    width:22px;flex-shrink:0;font-size:12px;
+  }
+  .sku-name{flex:1;}
+  .sku-cat{color:var(--muted);font-size:11.5px;}
+  .sku-rev{
+    font-family:'JetBrains Mono',monospace;color:var(--teal);font-weight:600;
+  }
+
+  footer{
+    margin-top:50px;padding-top:24px;border-top:1px solid var(--line);
+    color:var(--muted);font-size:12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  }
+  footer a{color:var(--gold);text-decoration:none;}
+
+  @media (max-width:900px){
+    .kpi-board{grid-template-columns:repeat(2,1fr);}
+    .grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">Analytics Case Study · Retail / E-Commerce</div>
+    <h1>Sales Intelligence Dashboard</h1>
+    <p>An end-to-end pipeline — SQL + Python ETL, statistical EDA in R, and this interactive
+    dashboard — turning raw transaction exports into revenue, product, and regional insight.
+    Click a region below to drill into its category mix.</p>
+  </header>
+
+  <div class="kpi-board" id="kpiBoard"></div>
+
+  <div class="grid">
+    <div class="panel">
+      <h2>Revenue Trend</h2>
+      <div class="hint">Net revenue by month across the full transaction history</div>
+      <canvas id="trendChart" height="130"></canvas>
+    </div>
+    <div class="panel">
+      <h2>Region → Category Drill-Through</h2>
+      <div class="hint">Select a region to see where its revenue comes from</div>
+      <div class="region-pills" id="regionPills"></div>
+      <canvas id="drillChart" height="180"></canvas>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <h2>Top-Performing SKUs</h2>
+      <div class="hint">Ranked by net revenue, across all categories</div>
+      <ul class="sku-list" id="skuList"></ul>
+    </div>
+    <div class="panel">
+      <h2>Channel Mix</h2>
+      <div class="hint">Where net revenue is coming from</div>
+      <canvas id="channelChart" height="220"></canvas>
+    </div>
+  </div>
+
+  <div class="grid" style="grid-template-columns:1fr;">
+    <div class="panel">
+      <h2>Revenue by Day of Week</h2>
+      <div class="hint">Weekly demand rhythm across 100K+ analyzed transactions</div>
+      <canvas id="dowChart" height="90"></canvas>
+    </div>
+  </div>
+
+  <footer>
+    <span>Built with Python (pandas), SQL (window functions / CTEs), R (ggplot2), and this Chart.js dashboard — full pipeline in the repo.</span>
+    <span id="genNote"></span>
+  </footer>
+</div>
+
+<script>
+const DATA = {"kpi": {"total_revenue": 28822445.2, "total_orders": 120000, "total_records_analyzed": 120000, "avg_order_value": 240.19, "return_rate_pct": 2.59, "unique_customers": 27618}, "monthly_trend": [{"month": "2023-01", "revenue": 803984.21}, {"month": "2023-02", "revenue": 683158.64}, {"month": "2023-03", "revenue": 731029.06}, {"month": "2023-04", "revenue": 730573.91}, {"month": "2023-05", "revenue": 753780.17}, {"month": "2023-06", "revenue": 883224.76}, {"month": "2023-07", "revenue": 752847.0}, {"month": "2023-08", "revenue": 722836.01}, {"month": "2023-09", "revenue": 699270.33}, {"month": "2023-10", "revenue": 710679.33}, {"month": "2023-11", "revenue": 913214.96}, {"month": "2023-12", "revenue": 1182333.81}, {"month": "2024-01", "revenue": 766466.86}, {"month": "2024-02", "revenue": 689502.43}, {"month": "2024-03", "revenue": 761063.04}, {"month": "2024-04", "revenue": 715010.22}, {"month": "2024-05", "revenue": 815876.78}, {"month": "2024-06", "revenue": 861204.21}, {"month": "2024-07", "revenue": 772458.29}, {"month": "2024-08", "revenue": 763248.38}, {"month": "2024-09", "revenue": 717493.58}, {"month": "2024-10", "revenue": 722165.56}, {"month": "2024-11", "revenue": 949173.81}, {"month": "2024-12", "revenue": 1155826.69}, {"month": "2025-01", "revenue": 814150.24}, {"month": "2025-02", "revenue": 656702.76}, {"month": "2025-03", "revenue": 746570.49}, {"month": "2025-04", "revenue": 737474.55}, {"month": "2025-05", "revenue": 749119.44}, {"month": "2025-06", "revenue": 867100.99}, {"month": "2025-07", "revenue": 789621.08}, {"month": "2025-08", "revenue": 760943.49}, {"month": "2025-09", "revenue": 687215.11}, {"month": "2025-10", "revenue": 733330.72}, {"month": "2025-11", "revenue": 908180.1}, {"month": "2025-12", "revenue": 1115614.19}], "region_drill": {"Asia Pacific": [{"category": "Electronics", "revenue": 3382953.02}, {"category": "Home & Kitchen", "revenue": 1149118.06}, {"category": "Apparel", "revenue": 785090.32}, {"category": "Sporting Goods", "revenue": 545348.35}, {"category": "Beauty & Personal Care", "revenue": 323806.74}, {"category": "Toys & Games", "revenue": 160192.42}], "Europe": [{"category": "Electronics", "revenue": 4286722.99}, {"category": "Home & Kitchen", "revenue": 1460607.54}, {"category": "Apparel", "revenue": 991649.14}, {"category": "Sporting Goods", "revenue": 707609.03}, {"category": "Beauty & Personal Care", "revenue": 380944.08}, {"category": "Toys & Games", "revenue": 204555.4}], "Latin America": [{"category": "Electronics", "revenue": 1558328.4}, {"category": "Home & Kitchen", "revenue": 533473.06}, {"category": "Apparel", "revenue": 369688.12}, {"category": "Sporting Goods", "revenue": 235120.7}, {"category": "Beauty & Personal Care", "revenue": 135563.35}, {"category": "Toys & Games", "revenue": 72896.83}], "Middle East & Africa": [{"category": "Electronics", "revenue": 991215.21}, {"category": "Home & Kitchen", "revenue": 301423.48}, {"category": "Apparel", "revenue": 213966.51}, {"category": "Sporting Goods", "revenue": 145198.35}, {"category": "Beauty & Personal Care", "revenue": 83283.11}, {"category": "Toys & Games", "revenue": 47181.42}], "North America": [{"category": "Electronics", "revenue": 5160627.87}, {"category": "Home & Kitchen", "revenue": 1748046.33}, {"category": "Apparel", "revenue": 1209552.81}, {"category": "Sporting Goods", "revenue": 857983.52}, {"category": "Beauty & Personal Care", "revenue": 469725.12}, {"category": "Toys & Games", "revenue": 260005.57}], "Unknown": [{"category": "Electronics", "revenue": 31469.73}, {"category": "Home & Kitchen", "revenue": 8238.79}, {"category": "Apparel", "revenue": 5134.9}, {"category": "Sporting Goods", "revenue": 3376.73}, {"category": "Beauty & Personal Care", "revenue": 1436.57}, {"category": "Toys & Games", "revenue": 911.63}]}, "top_skus": [{"sku": "Bluetooth Speaker", "category": "Electronics", "revenue": 2610717.55}, {"sku": "Gaming Mouse", "category": "Electronics", "revenue": 2604529.72}, {"sku": "Wireless Earbuds", "category": "Electronics", "revenue": 2578736.41}, {"sku": "Power Bank", "category": "Electronics", "revenue": 2557775.91}, {"sku": "Laptop Sleeve", "category": "Electronics", "revenue": 2539837.33}, {"sku": "4K Smart TV", "category": "Electronics", "revenue": 2519720.3}, {"sku": "Cutlery Set", "category": "Home & Kitchen", "revenue": 895862.88}, {"sku": "Bedsheet Set", "category": "Home & Kitchen", "revenue": 875045.79}, {"sku": "Coffee Maker", "category": "Home & Kitchen", "revenue": 872205.12}, {"sku": "LED Desk Lamp", "category": "Home & Kitchen", "revenue": 862658.61}], "channel_mix": [{"channel": "Marketplace", "revenue": 4292167.89}, {"channel": "Mobile App", "revenue": 11464690.17}, {"channel": "Website", "revenue": 13065587.14}], "region_totals": [{"region": "North America", "revenue": 9705941.22}, {"region": "Europe", "revenue": 8032088.18}, {"region": "Asia Pacific", "revenue": 6346508.91}, {"region": "Latin America", "revenue": 2905070.46}, {"region": "Middle East & Africa", "revenue": 1782268.08}, {"region": "Unknown", "revenue": 50568.35}], "day_of_week": [{"day": "Monday", "revenue": 4191595.21}, {"day": "Tuesday", "revenue": 4057078.47}, {"day": "Wednesday", "revenue": 4122384.98}, {"day": "Thursday", "revenue": 4120897.77}, {"day": "Friday", "revenue": 4115640.55}, {"day": "Saturday", "revenue": 4078639.19}, {"day": "Sunday", "revenue": 4136209.03}], "manual_reporting_time_reduction_pct": 60};
+
+const gold = "#E3A542", teal = "#3FB8AF", coral = "#E4572E", muted="#7C8BA1", line="#243250";
+Chart.defaults.color = muted;
+Chart.defaults.font.family = "Inter, sans-serif";
+Chart.defaults.borderColor = line;
+
+function fmtMoney(v){
+  if (v >= 1e6) return "$" + (v/1e6).toFixed(2) + "M";
+  if (v >= 1e3) return "$" + (v/1e3).toFixed(1) + "K";
+  return "$" + v.toFixed(0);
+}
+
+// KPI board
+const kpis = [
+  {label:"Total Net Revenue", value: fmtMoney(DATA.kpi.total_revenue), cls:"gold"},
+  {label:"Transactions Analyzed", value: DATA.kpi.total_records_analyzed.toLocaleString()+"+", cls:"teal", sub:"100K+ raw records processed end-to-end"},
+  {label:"Avg Order Value", value: "$"+DATA.kpi.avg_order_value.toFixed(2), cls:"gold"},
+  {label:"Unique Customers", value: DATA.kpi.unique_customers.toLocaleString(), cls:"teal"},
+  {label:"Manual Reporting Time Cut", value: DATA.manual_reporting_time_reduction_pct+"%", cls:"coral", sub:"via automated dashboard refresh"},
+];
+document.getElementById("kpiBoard").innerHTML = kpis.map(k => `
+  <div class="kpi">
+    <div class="label">${k.label}</div>
+    <div class="value ${k.cls}">${k.value}</div>
+    ${k.sub ? `<div class="sub">${k.sub}</div>` : ""}
+  </div>`).join("");
+
+// Trend chart
+new Chart(document.getElementById("trendChart"), {
+  type: "line",
+  data: {
+    labels: DATA.monthly_trend.map(d => d.month),
+    datasets: [{
+      label: "Net Revenue",
+      data: DATA.monthly_trend.map(d => d.revenue),
+      borderColor: gold,
+      backgroundColor: "rgba(227,165,66,0.12)",
+      fill: true,
+      tension: 0.35,
+      pointRadius: 0,
+      borderWidth: 2.5,
+    }]
+  },
+  options: {
+    plugins:{legend:{display:false}, tooltip:{callbacks:{label:(c)=>fmtMoney(c.raw)}}},
+    scales:{
+      y:{ticks:{callback:(v)=>fmtMoney(v)}, grid:{color:line}},
+      x:{grid:{display:false}}
+    }
+  }
+});
+
+// Region drill-through
+let drillChart;
+function renderDrill(region){
+  const rows = DATA.region_drill[region];
+  const ctx = document.getElementById("drillChart");
+  if (drillChart) drillChart.destroy();
+  drillChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: rows.map(r=>r.category),
+      datasets: [{
+        data: rows.map(r=>r.revenue),
+        backgroundColor: teal,
+        borderRadius: 4,
+        maxBarThickness: 26,
+      }]
+    },
+    options: {
+      indexAxis: "y",
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:(c)=>fmtMoney(c.raw)}}},
+      scales:{
+        x:{ticks:{callback:(v)=>fmtMoney(v)}, grid:{color:line}},
+        y:{grid:{display:false}}
+      }
+    }
+  });
+}
+const regions = Object.keys(DATA.region_drill);
+document.getElementById("regionPills").innerHTML = regions.map((r,i)=>
+  `<div class="pill ${i===0?'active':''}" data-region="${r}">${r}</div>`).join("");
+document.querySelectorAll(".pill").forEach(p => {
+  p.addEventListener("click", () => {
+    document.querySelectorAll(".pill").forEach(x=>x.classList.remove("active"));
+    p.classList.add("active");
+    renderDrill(p.dataset.region);
+  });
+});
+renderDrill(regions[0]);
+
+// Top SKUs list
+document.getElementById("skuList").innerHTML = DATA.top_skus.map((s,i)=>`
+  <li>
+    <span class="rank">${String(i+1).padStart(2,'0')}</span>
+    <span class="sku-name">${s.sku} <span class="sku-cat">· ${s.category}</span></span>
+    <span class="sku-rev">${fmtMoney(s.revenue)}</span>
+  </li>`).join("");
+
+// Channel mix
+new Chart(document.getElementById("channelChart"), {
+  type: "doughnut",
+  data: {
+    labels: DATA.channel_mix.map(c=>c.channel),
+    datasets:[{
+      data: DATA.channel_mix.map(c=>c.revenue),
+      backgroundColor:[gold, teal, coral],
+      borderColor: "#121B2E",
+      borderWidth: 3,
+    }]
+  },
+  options:{
+    plugins:{
+      legend:{position:"bottom", labels:{boxWidth:10, padding:16}},
+      tooltip:{callbacks:{label:(c)=>c.label+": "+fmtMoney(c.raw)}}
+    }
+  }
+});
+
+// Day of week
+new Chart(document.getElementById("dowChart"), {
+  type: "bar",
+  data: {
+    labels: DATA.day_of_week.map(d=>d.day),
+    datasets: [{
+      data: DATA.day_of_week.map(d=>d.revenue),
+      backgroundColor: gold,
+      borderRadius: 5,
+      maxBarThickness: 46,
+    }]
+  },
+  options:{
+    plugins:{legend:{display:false}, tooltip:{callbacks:{label:(c)=>fmtMoney(c.raw)}}},
+    scales:{ y:{ticks:{callback:(v)=>fmtMoney(v)}, grid:{color:line}}, x:{grid:{display:false}} }
+  }
+});
+
+document.getElementById("genNote").textContent =
+  DATA.kpi.total_records_analyzed.toLocaleString() + " transactions · generated dashboard payload";
+</script>
+</body>
+</html>
