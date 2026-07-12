@@ -6,6 +6,9 @@ regional patterns, and product-category dynamics for the Sales Dashboard project
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
+from pathlib import Path
+
+OUT_DIR = Path(__file__).parent
 
 rng = np.random.default_rng(42)
 
@@ -114,6 +117,6 @@ df.loc[dirty_idx[400:], "region"] = None     # missing region
 dupes = df.sample(300, random_state=1)
 df = pd.concat([df, dupes], ignore_index=True)
 
-df.to_csv("/home/claude/ecommerce/data/raw_transactions.csv", index=False)
+df.to_csv(OUT_DIR / "raw_transactions.csv", index=False)
 print(f"Generated {len(df):,} rows -> raw_transactions.csv")
 print(df.head())

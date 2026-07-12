@@ -45,15 +45,34 @@ An end-to-end sales analytics pipeline that turns raw e-commerce transaction exp
 ## Run it yourself
 
 ```bash
-pip install pandas numpy
+pip install pandas numpy openpyxl
 python data/generate_data.py
 python etl/etl_pipeline.py
 python python/eda_analysis.py
+python excel_reporting/quality_root_cause_report.py
 # then open dashboard/index.html in a browser
 ```
 
+## Quality & inventory adjustment reporting (Excel)
+
+`excel_reporting/quality_root_cause_report.py` takes the cleaned warehouse
+data and publishes a stakeholder-ready **Excel** workbook
+(`quality_root_cause_report.xlsx`) — the kind of daily/weekly/monthly
+quality and inventory-adjustment report a retail operations or quality
+analyst would actually hand to a manager:
+
+- **Summary** — headline KPIs: return rate, total adjustment value, #1 root cause
+- **Root Cause (Pareto)** — returns ranked and cumulative-% by defect reason (damaged in transit, wrong item shipped, quality defect, etc.), with a bar chart
+- **By Category / By Region** — defect rate and top root cause per segment, colour-scaled to flag outliers at a glance
+- **Adjustment Log** — row-level inventory adjustment detail (order, SKU, reason, severity, value) for audit trail
+
+This adds an explicit root-cause categorization layer on top of the existing
+return-rate analysis, and delivers it in the format (Excel) most operations
+and quality teams actually work in day to day, alongside the Power BI/SQL/R
+layers used for the broader sales analysis.
+
 ## Tech stack
-`Python` (pandas, numpy) · `SQL` (SQLite/MySQL-compatible, CTEs & window functions) · `R` (ggplot2, dplyr) · `Chart.js` for the dashboard front end.
+`Python` (pandas, numpy, openpyxl) · `SQL` (SQLite/MySQL-compatible, CTEs & window functions) · `R` (ggplot2, dplyr) · `Chart.js` for the dashboard front end.
 
 ---
 *Note: this project uses a synthetic dataset engineered to mirror real-world e-commerce transaction patterns (seasonality, regional mix, return behavior) for demonstration purposes. The pipeline architecture is designed to plug into a live transactional database with minimal changes.*
